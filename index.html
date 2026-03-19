@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ SharkCoders SOC Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyber-black: #0a0a0f;
+            --cyber-dark: #12121a;
+            --cyber-blue: #00d4ff;
+            --cyber-green: #00ff88;
+            --cyber-red: #ff3366;
+            --cyber-yellow: #ffcc00;
+            --cyber-purple: #a855f7;
+            --cyber-orange: #ff8c00;
+            --glow-blue: 0 0 20px rgba(0, 212, 255, 0.5);
+            --glow-green: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--cyber-black);
+            color: #fff;
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 80%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Scanline effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--cyber-blue) 0%, var(--cyber-purple) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            box-shadow: var(--glow-blue);
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 212, 255, 0.8), 0 0 60px rgba(168, 85, 247, 0.4); }
+        }
+
+        .logo-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--cyber-blue);
+            text-shadow: var(--glow-blue);
+        }
+
+        .subtitle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .tagline {
+            font-size: 1rem;
+            color: var(--cyber-green);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Progress Overview */
+        .progress-overview {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .progress-stat {
+            text-align: center;
+            padding: 20px 30px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 15px;
+        }
+
+        .progress-stat-value {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            color: var(--cyber-green);
+        }
+
+        .progress-stat-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Levels Grid */
+        .levels-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            color: var(--cyber-blue);
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .level-card {
+            background: linear-gradient(180deg, rgba(18, 18, 26, 0.95) 0%, rgba(10, 10, 15, 0.98) 100%);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+        }
+
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyber-blue) 0%, var(--cyber-purple) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .level-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--cyber-blue);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .level-card:hover::before {
+            opacity: 1;
+        }
+
+        .level-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .level-card.locked:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .level-card.completed {
+            border-color: var(--cyber-green);
+        }
+
+        .level-card.completed::before {
+            background: var(--cyber-green);
+            opacity: 1;
+        }
+
+        .level-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .level-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .level-1 .level-icon { background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%); }
+        .level-2 .level-icon { background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%); }
+        .level-3 .level-icon { background: linear-gradient(135deg, #ffcc00 0%, #ff9900 100%); }
+        .level-4 .level-icon { background: linear-gradient(135deg, #ff8c00 0%, #ff6600 100%); }
+        .level-5 .level-icon { background: linear-gradient(135deg, #ff3366 0%, #cc0044 100%); }
+
+        .level-info h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .level-info h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .level-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .level-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .topic-tag {
+            padding: 5px 12px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--cyber-blue);
+        }
+
+        .level-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .level-status {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-available { color: var(--cyber-green); }
+        .status-locked { color: rgba(255, 255, 255, 0.4); }
+        .status-completed { color: var(--cyber-green); }
+
+        .level-duration {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .level-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .badge-new {
+            background: var(--cyber-green);
+            color: var(--cyber-black);
+        }
+
+        .badge-coming {
+            background: rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .badge-complete {
+            background: var(--cyber-green);
+            color: var(--cyber-black);
+        }
+
+        /* Firebase Config Section */
+        .firebase-section {
+            background: linear-gradient(180deg, rgba(255, 140, 0, 0.1) 0%, rgba(255, 100, 0, 0.05) 100%);
+            border: 1px solid var(--cyber-orange);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .firebase-section h3 {
+            font-family: 'Orbitron', monospace;
+            color: var(--cyber-orange);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .firebase-section p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+
+        .firebase-input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .firebase-input-group input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--cyber-orange);
+            border-radius: 10px;
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .firebase-input-group button {
+            padding: 12px 25px;
+            background: var(--cyber-orange);
+            border: none;
+            border-radius: 10px;
+            color: var(--cyber-black);
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .firebase-input-group button:hover {
+            background: var(--cyber-yellow);
+            transform: scale(1.05);
+        }
+
+        .firebase-status {
+            margin-top: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            margin-top: 50px;
+        }
+
+        .footer-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.2rem;
+            color: var(--cyber-blue);
+            margin-bottom: 10px;
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            padding: 15px 30px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid var(--cyber-green);
+            border-radius: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            color: var(--cyber-green);
+            z-index: 3000;
+            transition: transform 0.3s ease;
+            box-shadow: var(--glow-green);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.error {
+            border-color: var(--cyber-red);
+            color: var(--cyber-red);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .logo-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+            
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-overview {
+                gap: 15px;
+            }
+            
+            .progress-stat {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">🦈</div>
+                <div class="logo-text">SOC ACADEMY</div>
+            </div>
+            <p class="subtitle">Centro de Operações de Segurança - SharkCoders</p>
+            <p class="tagline">🔒 Torna-te um Analista de Cibersegurança</p>
+        </header>
+
+        <!-- Progress Overview -->
+        <div class="progress-overview">
+            <div class="progress-stat">
+                <div class="progress-stat-value" id="completedLevels">0</div>
+                <div class="progress-stat-label">Níveis Completos</div>
+            </div>
+            <div class="progress-stat">
+                <div class="progress-stat-value" id="totalScore">0</div>
+                <div class="progress-stat-label">Pontos Totais</div>
+            </div>
+            <div class="progress-stat">
+                <div class="progress-stat-value" id="currentRank">Recruta</div>
+                <div class="progress-stat-label">Ranking</div>
+            </div>
+        </div>
+
+        <!-- Firebase Config -->
+        <section class="firebase-section">
+            <h3>🔥 Configuração Multiplayer</h3>
+            <p>Para jogar o Nível 5 (Simulador SOC) com outros participantes, configura o Firebase:</p>
+            <div class="firebase-input-group">
+                <input type="text" id="firebaseUrl" placeholder="https://teu-projeto.firebasedatabase.app">
+                <button onclick="saveFirebaseConfig()">Guardar</button>
+            </div>
+            <div class="firebase-status" id="firebaseStatus"></div>
+        </section>
+
+        <!-- Levels -->
+        <h2 class="levels-title">📚 Jornada de Formação</h2>
+        
+        <div class="levels-grid">
+            <!-- Level 1 -->
+            <a href="nivel-1/index.html" class="level-card level-1">
+                <span class="level-badge badge-new">DISPONÍVEL</span>
+                <div class="level-header">
+                    <div class="level-icon">🌐</div>
+                    <div class="level-info">
+                        <h3>Nível 1</h3>
+                        <h2>RECRUTA</h2>
+                    </div>
+                </div>
+                <p class="level-description">
+                    Domina os fundamentos da Internet. Aprende como os dados viajam pelo mundo digital.
+                </p>
+                <div class="level-topics">
+                    <span class="topic-tag">Internet</span>
+                    <span class="topic-tag">Endereço IP</span>
+                    <span class="topic-tag">DNS</span>
+                    <span class="topic-tag">Portas</span>
+                </div>
+                <div class="level-footer">
+                    <span class="level-status status-available">● Disponível</span>
+                    <span class="level-duration">⏱️ ~20 min</span>
+                </div>
+            </a>
+
+            <!-- Level 2 -->
+            <div class="level-card level-2 locked" onclick="showLocked()">
+                <span class="level-badge badge-coming">EM BREVE</span>
+                <div class="level-header">
+                    <div class="level-icon">🔒</div>
+                    <div class="level-info">
+                        <h3>Nível 2</h3>
+                        <h2>CADETE</h2>
+                    </div>
+                </div>
+                <p class="level-description">
+                    Explora redes locais e aprende os básicos de segurança. Firewalls, VPNs e passwords seguras.
+                </p>
+                <div class="level-topics">
+                    <span class="topic-tag">LAN/WAN</span>
+                    <span class="topic-tag">Firewall</span>
+                    <span class="topic-tag">VPN</span>
+                    <span class="topic-tag">Passwords</span>
+                </div>
+                <div class="level-footer">
+                    <span class="level-status status-locked">🔒 Completa Nível 1</span>
+                    <span class="level-duration">⏱️ ~25 min</span>
+                </div>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="level-card level-3 locked" onclick="showLocked()">
+                <span class="level-badge badge-coming">EM BREVE</span>
+                <div class="level-header">
+                    <div class="level-icon">⚠️</div>
+                    <div class="level-info">
+                        <h3>Nível 3</h3>
+                        <h2>ANALISTA JR</h2>
+                    </div>
+                </div>
+                <p class="level-description">
+                    Conhece os inimigos! Aprende sobre malware, phishing e técnicas de engenharia social.
+                </p>
+                <div class="level-topics">
+                    <span class="topic-tag">Malware</span>
+                    <span class="topic-tag">Phishing</span>
+                    <span class="topic-tag">Ransomware</span>
+                    <span class="topic-tag">Eng. Social</span>
+                </div>
+                <div class="level-footer">
+                    <span class="level-status status-locked">🔒 Completa Nível 2</span>
+                    <span class="level-duration">⏱️ ~30 min</span>
+                </div>
+            </div>
+
+            <!-- Level 4 -->
+            <div class="level-card level-4 locked" onclick="showLocked()">
+                <span class="level-badge badge-coming">EM BREVE</span>
+                <div class="level-header">
+                    <div class="level-icon">📊</div>
+                    <div class="level-info">
+                        <h3>Nível 4</h3>
+                        <h2>ANALISTA</h2>
+                    </div>
+                </div>
+                <p class="level-description">
+                    Domina as ferramentas SOC! SIEM, análise de logs e threat intelligence.
+                </p>
+                <div class="level-topics">
+                    <span class="topic-tag">SIEM</span>
+                    <span class="topic-tag">Log Analysis</span>
+                    <span class="topic-tag">Threat Intel</span>
+                    <span class="topic-tag">IoCs</span>
+                </div>
+                <div class="level-footer">
+                    <span class="level-status status-locked">🔒 Completa Nível 3</span>
+                    <span class="level-duration">⏱️ ~35 min</span>
+                </div>
+            </div>
+
+            <!-- Level 5 -->
+            <a href="nivel-5/index.html" class="level-card level-5">
+                <span class="level-badge badge-new">MULTIPLAYER</span>
+                <div class="level-header">
+                    <div class="level-icon">🛡️</div>
+                    <div class="level-info">
+                        <h3>Nível 5</h3>
+                        <h2>COMANDANTE</h2>
+                    </div>
+                </div>
+                <p class="level-description">
+                    A prova final! Simulação de incidente em tempo real com outros analistas. Modo multiplayer!
+                </p>
+                <div class="level-topics">
+                    <span class="topic-tag">Simulação</span>
+                    <span class="topic-tag">Incident Response</span>
+                    <span class="topic-tag">Multiplayer</span>
+                    <span class="topic-tag">Tempo Real</span>
+                </div>
+                <div class="level-footer">
+                    <span class="level-status status-available">● Disponível</span>
+                    <span class="level-duration">⏱️ ~45 min</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-logo">🦈 SharkCoders</div>
+            <p class="footer-text">Formação em Cibersegurança · SOC Academy 2024</p>
+        </footer>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">Notificação</div>
+
+    <script>
+        // Load saved progress
+        function loadProgress() {
+            let completedCount = 0;
+            let totalScore = 0;
+
+            // Check each level
+            for (let i = 1; i <= 5; i++) {
+                const complete = localStorage.getItem(`soc-level${i}-complete`);
+                const score = localStorage.getItem(`soc-level${i}-score`);
+                
+                if (complete === 'true') {
+                    completedCount++;
+                    const card = document.querySelector(`.level-${i}`);
+                    if (card) {
+                        card.classList.add('completed');
+                        card.classList.remove('locked');
+                        const badge = card.querySelector('.level-badge');
+                        if (badge) {
+                            badge.textContent = '✓ COMPLETO';
+                            badge.className = 'level-badge badge-complete';
+                        }
+                        const status = card.querySelector('.level-status');
+                        if (status) {
+                            status.textContent = '✓ Completo';
+                            status.className = 'level-status status-completed';
+                        }
+                    }
+                    
+                    // Unlock next level
+                    const nextCard = document.querySelector(`.level-${i + 1}`);
+                    if (nextCard && nextCard.classList.contains('locked')) {
+                        nextCard.classList.remove('locked');
+                        const nextStatus = nextCard.querySelector('.level-status');
+                        if (nextStatus) {
+                            nextStatus.textContent = '● Disponível';
+                            nextStatus.className = 'level-status status-available';
+                        }
+                        const nextBadge = nextCard.querySelector('.level-badge');
+                        if (nextBadge && nextBadge.textContent === 'EM BREVE') {
+                            nextBadge.textContent = 'DESBLOQUEADO';
+                            nextBadge.className = 'level-badge badge-new';
+                        }
+                    }
+                }
+                
+                if (score) {
+                    totalScore += parseInt(score);
+                }
+            }
+
+            document.getElementById('completedLevels').textContent = completedCount;
+            document.getElementById('totalScore').textContent = totalScore;
+
+            // Update rank
+            const ranks = ['Recruta', 'Cadete', 'Analista Jr', 'Analista', 'Comandante', 'Elite'];
+            document.getElementById('currentRank').textContent = ranks[Math.min(completedCount, ranks.length - 1)];
+
+            // Load Firebase config
+            const firebaseUrl = localStorage.getItem('soc-firebase-url');
+            if (firebaseUrl) {
+                document.getElementById('firebaseUrl').value = firebaseUrl;
+                document.getElementById('firebaseStatus').innerHTML = '<span style="color: var(--cyber-green);">✓ Firebase configurado</span>';
+            }
+        }
+
+        // Save Firebase config
+        function saveFirebaseConfig() {
+            const url = document.getElementById('firebaseUrl').value.trim();
+            if (!url) {
+                showToast('Insere a URL do Firebase!', true);
+                return;
+            }
+            
+            localStorage.setItem('soc-firebase-url', url);
+            document.getElementById('firebaseStatus').innerHTML = '<span style="color: var(--cyber-green);">✓ Configuração guardada!</span>';
+            showToast('Firebase configurado com sucesso!');
+        }
+
+        // Show locked message
+        function showLocked() {
+            showToast('Completa os níveis anteriores primeiro!', true);
+        }
+
+        // Toast notification
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.toggle('error', isError);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // Initialize
+        loadProgress();
+
+        // Add click handlers to locked cards
+        document.querySelectorAll('.level-card.locked').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                showLocked();
+            });
+        });
+    </script>
+</body>
+</html>
